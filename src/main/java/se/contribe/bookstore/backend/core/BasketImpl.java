@@ -1,6 +1,5 @@
 package se.contribe.bookstore.backend.core;
 
-import org.springframework.stereotype.Component;
 import se.contribe.bookstore.backend.api.Basket;
 import se.contribe.bookstore.backend.api.Book;
 
@@ -8,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
 public class BasketImpl implements Basket {
     private List<Book> booksInBasket = new LinkedList<>();
 

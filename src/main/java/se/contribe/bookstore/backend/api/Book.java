@@ -1,6 +1,5 @@
 package se.contribe.bookstore.backend.api;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -44,16 +43,13 @@ public class Book {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (o == null || getClass() != o.getClass()) return false;
 
         Book book = (Book) o;
 
-        return new EqualsBuilder()
-                .append(title, book.title)
-                .append(author, book.author)
-                .append(price, book.price)
-                .isEquals();
+        if (!title.equals(book.title)) return false;
+        if (!author.equals(book.author)) return false;
+        return price.compareTo(book.price) == 0; // equals is not enough
     }
 
     @Override
@@ -61,7 +57,7 @@ public class Book {
         return new HashCodeBuilder(17, 37)
                 .append(title)
                 .append(author)
-                .append(price)
+                .append(price.doubleValue()) // equals => same hashCode but not the other way round
                 .toHashCode();
     }
 

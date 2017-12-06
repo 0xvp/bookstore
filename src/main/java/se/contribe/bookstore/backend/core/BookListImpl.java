@@ -2,8 +2,6 @@ package se.contribe.bookstore.backend.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.util.xml.StaxUtils;
 import se.contribe.bookstore.backend.api.Book;
 import se.contribe.bookstore.backend.api.BookList;
 import se.contribe.bookstore.backend.api.Status;
@@ -11,9 +9,9 @@ import se.contribe.bookstore.backend.api.Status;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
-@Component
 public class BookListImpl implements BookList {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookListImpl.class);
     private static final Object BOOK_LIST_LOCK = new Object();
@@ -26,6 +24,7 @@ public class BookListImpl implements BookList {
         }
         return bookInventory.keySet().stream()
                 .filter(book -> book.getTitle().contains(searchString) || book.getAuthor().contains(searchString))
+                .sorted(comparing(Book::getAuthor).thenComparing(Book::getTitle).thenComparing(Book::getPrice))
                 .toArray(Book[]::new);
     }
 
