@@ -138,7 +138,3 @@ crashlytics-build.properties
 fabric.properties
 
 .idea/workspace.xml
-src/main/java/se/contribe/bookstore/cli/
-src/main/java/se/contribe/bookstore/core/
-src/main/resources/
-src/test/
