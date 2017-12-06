@@ -1,4 +1,4 @@
-package se.contribe.bookstore.api;
+package se.contribe.bookstore.backend.api;
 
 public interface BookList {
 

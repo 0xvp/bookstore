@@ -1,4 +1,4 @@
-package se.contribe.bookstore.api;
+package se.contribe.bookstore.backend.api;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,28 +14,31 @@ public class Book {
 
     private BigDecimal price;
 
-    public String getTitle() {
-        return title;
+    public Book(String title, String author, BigDecimal price) {
+        if (title == null) {
+            throw new IllegalArgumentException("title must not be null");
+        }
+        if (author == null) {
+            throw new IllegalArgumentException("author must not be null");
+        }
+        if (price == null) {
+            throw new IllegalArgumentException("price must not be null");
+        }
+        this.title = title;
+        this.author = author;
+        this.price = price;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     @Override

@@ -3,7 +3,7 @@ package se.contribe.bookstore;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import se.contribe.bookstore.api.BookStore;
+import se.contribe.bookstore.frontend.api.BookStore;
 
 @Configuration
 @ComponentScan
