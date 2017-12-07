@@ -6,17 +6,16 @@ import se.contribe.bookstore.backend.api.Book;
 import se.contribe.bookstore.backend.api.BookList;
 import se.contribe.bookstore.backend.api.Status;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class BookListImpl implements BookList {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookListImpl.class);
     private static final Object BOOK_LIST_LOCK = new Object();
 
-    private Map<Book, Integer> bookInventory = new HashMap<>();
+    private Map<Book, Integer> bookInventory = new LinkedHashMap<>();
 
     public Book[] list(String searchString) {
         if (isEmpty(searchString)) {
@@ -24,7 +23,6 @@ public class BookListImpl implements BookList {
         }
         return bookInventory.keySet().stream()
                 .filter(book -> book.getTitle().contains(searchString) || book.getAuthor().contains(searchString))
-                .sorted(comparing(Book::getAuthor).thenComparing(Book::getTitle).thenComparing(Book::getPrice))
                 .toArray(Book[]::new);
     }
 
@@ -35,7 +33,12 @@ public class BookListImpl implements BookList {
         if (quantity < 0) {
             throw new IllegalArgumentException("quantity must not be negative");
         }
-        bookInventory.put(book, quantity);
+        if (bookInventory.containsKey(book)) {
+            Integer oldQuantity = bookInventory.get(book);
+            bookInventory.put(book, oldQuantity + quantity);
+        } else {
+            bookInventory.put(book, quantity);
+        }
         return true;
     }
 
@@ -62,7 +65,7 @@ public class BookListImpl implements BookList {
                     state[i] = Status.NOT_IN_STOCK.getId();
                     continue;
                 }
-                // buy it!
+                // reduce quantity if book is bought from the store
                 this.bookInventory.put(books[i], availableQuantity - 1);
                 state[i] = Status.OK.getId();
             }

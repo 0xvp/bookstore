@@ -11,10 +11,12 @@ public class BigDecimalUtils {
     }
 
     /**
+     * Function for parsing Strings to BigDecimal
      *
-     * @param decimalString
-     * @return
-     * @throws ParseException
+     * @param decimalString Stringrepresentation of BigDecimal
+     * @return BigDecimal from given String
+     * @throws ParseException when String could not be parsed
+     * @throws NullPointerException when given String is null
      */
     public static BigDecimal parseBigDecimal(String decimalString) throws ParseException {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols();

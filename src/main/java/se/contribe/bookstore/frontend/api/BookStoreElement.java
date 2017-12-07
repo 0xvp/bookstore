@@ -1,15 +1,21 @@
 package se.contribe.bookstore.frontend.api;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import se.contribe.bookstore.backend.api.Book;
 
+/**
+ * Handles the storage of a book with its quantity, will be obsolete when a DB is added
+ */
 public class BookStoreElement {
     private Book book;
     private int quantity;
 
     public BookStoreElement(Book book, int quantity) {
+        Validate.notNull(book);
+        Validate.isTrue(quantity >= 0, "quantity must not be negative");
         this.book = book;
         this.quantity = quantity;
     }
@@ -18,16 +24,8 @@ public class BookStoreElement {
         return book;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     @Override

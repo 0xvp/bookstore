@@ -1,10 +1,14 @@
 package se.contribe.bookstore.backend.api;
 
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.math.BigDecimal;
 
+/**
+ * Books
+ */
 public class Book {
 
     private String title;
@@ -13,16 +17,19 @@ public class Book {
 
     private BigDecimal price;
 
+    /**
+     * A book is unique over the three parameters title, author and price
+     * this allows books with same title and author but different price
+     * since no handling for duplicates with different prices is provided
+     *
+     * @param title
+     * @param author
+     * @param price
+     */
     public Book(String title, String author, BigDecimal price) {
-        if (title == null) {
-            throw new IllegalArgumentException("title must not be null");
-        }
-        if (author == null) {
-            throw new IllegalArgumentException("author must not be null");
-        }
-        if (price == null) {
-            throw new IllegalArgumentException("price must not be null");
-        }
+        Validate.notNull(title);
+        Validate.notNull(author);
+        Validate.notNull(price);
         this.title = title;
         this.author = author;
         this.price = price;
@@ -40,6 +47,13 @@ public class Book {
         return price;
     }
 
+    /**
+     * A book is equal when title, author and price are equal
+     * the price is equal when the value is equal ignoring trailing zero decimal places
+     *
+     * @param o other
+     * @return true if equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

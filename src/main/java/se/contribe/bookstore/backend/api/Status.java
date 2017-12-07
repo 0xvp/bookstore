@@ -1,5 +1,8 @@
 package se.contribe.bookstore.backend.api;
 
+/**
+ * States for availability of books in the bookstore
+ */
 public enum Status {
     OK(0),
     NOT_IN_STOCK(1),
