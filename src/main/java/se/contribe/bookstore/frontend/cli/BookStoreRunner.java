@@ -147,8 +147,10 @@ public class BookStoreRunner {
                         else {
                             throw new IllegalStateException("Unknown Status value");
                         }
+                        basket.removeBook(books[i]);
                     }
                     System.out.println("Total price of your shopping: " + total);
+
                 }
             }
         }
