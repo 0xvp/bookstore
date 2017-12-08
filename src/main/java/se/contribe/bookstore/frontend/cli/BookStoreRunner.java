@@ -38,7 +38,7 @@ public class BookStoreRunner {
         //We still perform an initial load in this test CLI to provide data without needing the url command
         // To provide full offline usage the inputFile was previously downloaded
         URL url = BookStoreRunner.class.getResource("/bookstoredata.csv");
-        loadInitialBookList(bookList, url);
+        loadBookList(bookList, url);
         printHelp();
 
         Book[] lastBookListResult = null;
@@ -64,11 +64,11 @@ public class BookStoreRunner {
 
             //loading data from given url
             if (input.equals("url")) {
-                String searchString = trim(scanner.nextLine());
+                String urlString = trim(scanner.nextLine());
 
-                if (!(searchString==null || searchString.isEmpty())) {
+                if (!(urlString==null || urlString.isEmpty())) {
                     try {
-                        loadInitialBookList(bookList, new URL(searchString));
+                        loadBookList(bookList, new URL(urlString));
                     }
                     catch (MalformedURLException e){
                         System.out.println("no valid URL provided");
@@ -156,7 +156,7 @@ public class BookStoreRunner {
         }
     }
 
-    private static void loadInitialBookList(BookList bookList, URL url) throws IOException {
+    private static void loadBookList(BookList bookList, URL url) throws IOException {
         BookStoreLoader loader = new BookStoreLoaderImpl();
 
         Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
