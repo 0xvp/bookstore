@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +35,10 @@ public class BookStoreRunner {
         BookList bookList = new BookListImpl();
         Basket basket = new BasketImpl();
 
-        loadInitalBookList(bookList);
+        //We still perform an initial load in this test CLI to provide data without needing the url command
+        // To provide full offline usage the inputFile was previously downloaded
+        URL url = BookStoreRunner.class.getResource("/bookstoredata.csv");
+        loadInitialBookList(bookList, url);
         printHelp();
 
         Book[] lastBookListResult = null;
@@ -56,6 +60,21 @@ public class BookStoreRunner {
                 Book[] books = bookList.list(searchString);
                 lastBookListResult = books;
                 printBooks(books);
+            }
+
+            //loading data from given url
+            if (input.equals("url")) {
+                String searchString = trim(scanner.nextLine());
+
+                if (!(searchString==null || searchString.isEmpty())) {
+                    try {
+                        loadInitialBookList(bookList, new URL(searchString));
+                    }
+                    catch (MalformedURLException e){
+                        System.out.println("no valid URL provided");
+                    }
+                }
+
             }
 
             //adds a new book to the book store inventory. this only persists during the session
@@ -135,10 +154,9 @@ public class BookStoreRunner {
         }
     }
 
-    private static void loadInitalBookList(BookList bookList) throws IOException {
+    private static void loadInitialBookList(BookList bookList, URL url) throws IOException {
         BookStoreLoader loader = new BookStoreLoaderImpl();
-        // To provide full offline usage the inputFile was previously downloaded
-        URL url = BookStoreRunner.class.getResource("/bookstoredata.csv");
+
         Reader reader = new InputStreamReader(new BOMInputStream(url.openStream()), "UTF-8");
         List<BookStoreElement> bookStoreElements = loader.load(reader);
         for (BookStoreElement element : bookStoreElements) {
@@ -154,6 +172,7 @@ public class BookStoreRunner {
         System.out.println("Welcome to the BookStore!");
         System.out.println("Please choose one of the following commands:");
         System.out.println("    list <string>      - list all book in the book store, optionally filtered");
+        System.out.println("    url <string>       - url to load additional data from given url");
         System.out.println("    add <book csv>     - add a new book to the book store - format like in CSV file");
         System.out.println("    basket add <id>    - add a book to the basket");
         System.out.println("    basket remove <id> - remove a book from the basket");
